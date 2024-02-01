@@ -1,0 +1,66 @@
+This is a guide to setup and use rabbitmq service on cloud server to use it for multiple purposes like - Media Commpression service for any social media application where multiple users uploading their contents on a scale and you need to compress it to get multiple resolutions for website optimisation.
+
+ ---- do not forget to give the user all the access ---- 
+
+Step 1: Install RabbitMQ Server
+
+sudo apt-get install curl gnupg apt-transport-https -y
+
+We are now ready to add repository signing keys for RabbiMQ main, ErLang, and RabbitMQ PackageCloud repositories respectively:
+
+sudo curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null
+sudo curl -1sLf "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg > /dev/null
+sudo curl -1sLf "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/io.packagecloud.rabbitmq.gpg > /dev/null
+
+sudo apt-get update -y
+
+sudo apt-get install -y erlang-base \
+     erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
+     erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
+     erlang-runtime-tools erlang-snmp erlang-ssl \
+     erlang-syntax-tools erlang-tftp erlang-tools erlang-xmerl
+
+Finally, we can install RabbitMQ server and its dependencies:
+
+sudo apt-get install rabbitmq-server -y --fix-missing
+
+sudo systemctl status rabbitmq-server
+
+Step 2: Enable RabbitMQ Management Console
+
+rabbitmq-plugins enable rabbitmq_management
+
+rabbitmq-plugins list
+
+Step 3: Set Up RabbitMQ Administrative User
+
+rabbitmqctl add_user thebigrabbit MyS3cur3Passwor_d
+
+rabbitmqctl set_user_tags rabbitadmin administrator
+
+rabbitmqctl delete_user guest
+
+
+Step 4: Create RabbitMQ Virtual Host
+
+rabbitmqctl add_vhost cherry_broker
+
+rabbitmqctl list_vhosts
+
+Step 5: Assign User Permissions on a Virtual Host
+
+
+sudo rabbitmqctl set_permissions -p <virtual_host> <user_name> <permissions>
+
+eg - sudo rabbitmqctl set_permissions -p cherry_broker thebigrabbit ".*" ".*" ".*".
+
+then only we can get login to the localhost and also can get our server link amqp://ad:ad123@localhost:5672 - here ad is admin and ad123 is the password for the access to the queue server.
+
+sudo ./rabbitmqctl stop
+
+sudo ./rabbitmq-server
+
+References - 
+
+https://www.cherryservers.com/blog/how-to-install-and-start-using-rabbitmq-on-ubuntu-22-04
+https://www.rabbitmq.com/install-debian.html
