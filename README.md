@@ -18,7 +18,6 @@ We are now ready to add repository signing keys for RabbiMQ main, ErLang, and Ra
 sudo curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null
 sudo curl -1sLf "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg > /dev/null
 sudo curl -1sLf "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/io.packagecloud.rabbitmq.gpg > /dev/null
-
 ```
 
 ```
@@ -65,12 +64,14 @@ sudo rabbitmq-plugins list
 # Step 3: Set Up RabbitMQ Administrative User
 
 ```
+
 sudo rabbitmqctl add_user thebigrabbit MyS3cur3Passwor_d
 
 ```
 
 
 ```
+
 sudo rabbitmqctl set_user_tags rabbitadmin administrator
 
 ```
